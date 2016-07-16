@@ -1,0 +1,13 @@
+<resources>
+    <!-- Main activity -->
+    <string name="app_name">Spending Tracker</string>
+    <string name="fab_string">New Expenditure</string>
+
+    <!-- New Expenditure Activity -->
+    <string name="act_text_view">Account: </string>
+    <string name="amnt_text_view">Amount: </string>
+    <string name="new_exp_title">New Expenditure</string>
+    <string name="desc_text_view">Description:</string>
+    <string name="submit_text">Submit</string>
+
+</resources>
