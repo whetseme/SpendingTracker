@@ -170,7 +170,7 @@ public class DbConnector {
                 " WHERE " + ACT_ID + " = " + this.actId + ";";
 
         this.database.rawQuery(updateQuery, null);
-
+        getCurrentBalance.close();
         this.close();
     }
 
@@ -180,7 +180,7 @@ public class DbConnector {
 
     /**
      * First gets the new balance according to the amount given (increments
-     * max id in in the update balance class) and inputs the new information
+     * max id in in the update balance class) and inputs the new transaction
      * as the last row in the table.
      * @param amount
      * @param description
@@ -188,15 +188,15 @@ public class DbConnector {
     protected void addNewTransaction( double amount, String description ) {
         this.incrementTransactionId();
 
-        ContentValues info = new ContentValues();
+        ContentValues trans = new ContentValues();
 
-        info.put(ACT_ID, this.actId);
-        info.put(TRANS_ID, this.transId);
-        info.put(TRANS_DESC, description);
-        info.put(TRANS_AMT, amount);
+        trans.put(ACT_ID, this.actId);
+        trans.put(TRANS_ID, this.transId);
+        trans.put(TRANS_DESC, description);
+        trans.put(TRANS_AMT, amount);
 
         this.open();
-        this.database.insert(TRANS_TABLE, null, info);
+        this.database.insert(TRANS_TABLE, null, trans);
         this.updateBalance(amount);
         this.close();
     }
