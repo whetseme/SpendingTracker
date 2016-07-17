@@ -147,6 +147,7 @@ public class DbConnector {
      * @return the new balance
      */
     private void updateBalance( double transAmount ) {
+        //TODO update account table with new balance info
         double balance = 0.0;
         String getCurrentBalanceQuery =
                 "SELECT " + ACT_BAL + ", " + ACT_TYPE +
@@ -174,8 +175,26 @@ public class DbConnector {
         this.close();
     }
 
+    /**
+     * Adds a new account to the accounts table in the database.
+     * TODO check for existing account names and/or ids
+     * @param name
+     * @param type
+     * @param balance
+     */
     protected void addNewAccount( String name, Integer type, Double balance ) {
+        this.incrementActId();
 
+        ContentValues account = new ContentValues();
+
+        account.put(ACT_ID, this.actId);
+        account.put(ACT_NAME, name);
+        account.put(ACT_TYPE, this.TYPES[type]);
+        account.put(ACT_BAL, balance);
+
+        this.open();
+        this.database.insert(ACT_TABLE, null, account);
+        this.close();
     }
 
     /**
