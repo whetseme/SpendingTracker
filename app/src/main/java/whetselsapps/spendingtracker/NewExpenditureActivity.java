@@ -26,7 +26,7 @@ public class NewExpenditureActivity extends AppCompatActivity {
         final DbConnector dbc =
                 new DbConnector(this.getApplicationContext());
         final Spinner spinner = (Spinner) findViewById(R.id.act_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, dbc.getAllAccounts());
         spinner.setAdapter(adapter);
 
@@ -40,16 +40,15 @@ public class NewExpenditureActivity extends AppCompatActivity {
                 dbc.setActId(account);
 
                 EditText amount = (EditText) findViewById(R.id.amnt_entry);
-                double amntEntry =
+                double amountEntry =
                         Double.parseDouble(amount.getText().toString());
 
                 EditText description =
                         (EditText) findViewById(R.id.desc_entry);
                 String descEntry = description.getText().toString();
 
-                dbc.addNewTransaction(amntEntry, descEntry);
+                dbc.addNewTransaction(amountEntry, descEntry);
             }
         });
     }
-    //comment to verify repository is working
 }

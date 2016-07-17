@@ -49,13 +49,13 @@ public class DbConnector {
     }
 
     /**
-     * Constructor. Calls
+     * Constructor.
+     * TODO make new method for setting ids. Call then whenever accessing the database.
      * @param context
      * @param accountName
      */
     protected DbConnector(Context context, String accountName) {
         this.dbOpenHelper = new DbOpenHelper(context, DB_NAME, null, 1);
-        this.setTransId();
 
         // check for null account name;
         if ( accountName == null )
@@ -71,8 +71,8 @@ public class DbConnector {
         actInfo.put(ACT_BAL, 400.00);
 
         ContentValues transInfo = new ContentValues();
-        transInfo.put(ACT_ID, this.actId);
         transInfo.put(TRANS_ID, this.transId);
+        transInfo.put(ACT_ID, this.actId);
         transInfo.put(TRANS_DESC, "first");
         transInfo.put(TRANS_AMT, 0.0);
 
@@ -209,8 +209,8 @@ public class DbConnector {
 
         ContentValues trans = new ContentValues();
 
-        trans.put(ACT_ID, this.actId);
         trans.put(TRANS_ID, this.transId);
+        trans.put(ACT_ID, this.actId);
         trans.put(TRANS_DESC, description);
         trans.put(TRANS_AMT, amount);
 
@@ -259,7 +259,7 @@ public class DbConnector {
     protected List<String> getAllAccounts() {
         String query = "SELECT DISTINCT(" + ACT_NAME + ")" +
                 " FROM " + ACT_TABLE + ";";
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         this.open();
         SQLiteCursor cursor = (SQLiteCursor) this.database.rawQuery(query, null);
         this.close();
@@ -269,6 +269,8 @@ public class DbConnector {
                 list.add(cursor.getString(cursor.getPosition()));
             } while ( cursor.moveToNext() );
         }
+        else
+            list = new ArrayList<>();
 
         return list;
     }
@@ -302,13 +304,13 @@ public class DbConnector {
                     " (" + ACT_ID + " INT PRIMARY KEY NOT NULL, " +
                         ACT_NAME + " TEXT NOT NULL, " +
                         ACT_TYPE + " TEXT NOT NULL, " +
-                        ACT_BAL + " REAL) WITHOUT ROWID;";
+                        ACT_BAL + " REAL);";
             String createTransactionTable =
                     "CREATE TABLE IF NOT EXISTS " + TRANS_TABLE +
-                    " (" + ACT_ID + " INT PRIMARY KEY NOT NULL, " +
-                        TRANS_ID + " INT PRIMARY KEY NOT NULL, " +
+                    " (" + TRANS_ID + " INT PRIMARY KEY NOT NULL, " +
+                        ACT_ID + " INT NOT NULL, " +
                         TRANS_DESC + " TEXT, " +
-                        TRANS_AMT + " REAL) WITHOUT ROWID;";
+                        TRANS_AMT + " REAL);";
 
 
             db.execSQL(createAccountsTable);
